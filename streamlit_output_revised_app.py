@@ -92,11 +92,12 @@ opponents_filter = st.sidebar.selectbox("対戦相手", ["京大以外", "京大
 pitcherLR_filter = st.sidebar.selectbox("対右or対左", ["右", "左"])
 runners_filter = st.sidebar.selectbox("塁状況", ["すべて", "なし", "1塁", "得点圏"])
 strikes_filter = st.sidebar.selectbox("ストライク", ["すべて", "0", "1", "2"])
-pitch_type_options = ["すべて"] + sorted(hitting_df["pitch_type"].dropna().unique())
-selected_pitch_type = st.sidebar.selectbox("球種で絞り込み", pitch_type_options)
+pitch_type_filter = st.sidebar.selectbox(
+    "球種", options=["すべて", "ストレート系", "スライダー系", "チェンジ系"]
+)
 
 hit_type_options = ["すべて"] + sorted(hitting_df["hit_type"].dropna().unique())
-selected_hit_type = st.sidebar.selectbox("打球性質で絞り込み", hit_type_options)
+selected_hit_type = st.sidebar.selectbox("打球性質", hit_type_options)
 
 # --- データフィルタリング ---
 filtered_df = hitting_df.copy()
@@ -112,8 +113,18 @@ if runners_filter != "すべて":
     filtered_df = filtered_df[filtered_df["runners"].astype(str) == runners_filter]
 if strikes_filter != "すべて":
     filtered_df = filtered_df[filtered_df["strikes"].astype(str) == strikes_filter]
-if selected_pitch_type != "すべて":
-    filtered_df = filtered_df[filtered_df["pitch_type"] == selected_pitch_type]
+if pitch_type_filter == "ストレート系":
+    filtered_df = filtered_df[
+        filtered_df["pitch_type"].isin(["ストレート", "ツーシーム"])
+    ]
+elif pitch_type_filter == "スライダー系":
+    filtered_df = filtered_df[
+        filtered_df["pitch_type"].isin(["スライダー", "カットボール"])
+    ]
+elif pitch_type_filter == "チェンジ系":
+    filtered_df = filtered_df[
+        filtered_df["pitch_type"].isin(["チェンジアップ", "フォーク"])
+    ]
 if selected_hit_type != "すべて":
     filtered_df = filtered_df[filtered_df["hit_type"] == selected_hit_type]
 
