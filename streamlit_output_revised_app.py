@@ -128,8 +128,8 @@ for _, row in filtered_df.iterrows():
     color = PITCH_TYPE_COLORS.get(row["pitch_type"], "gray")
     shape = HIT_TYPE_SHAPES.get(row["hit_type"], "ellipse")
 
-    draw_shape(draw, shape, x, y, 15, color)
-    draw.line([REFERENCE_POINT, (x, y)], fill=color, width=2)
+    draw_shape(draw, shape, x, y, 20, color)
+    draw.line([REFERENCE_POINT, (x, y)], fill=color, width=3)
 
 # --- 画像表示 ---
 st.image(img_to_draw, use_container_width=True)
