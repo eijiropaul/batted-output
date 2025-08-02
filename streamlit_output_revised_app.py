@@ -92,6 +92,8 @@ opponents_filter = st.sidebar.selectbox("対戦相手", ["京大以外", "京大
 pitcherLR_filter = st.sidebar.selectbox("対右or対左", ["右", "左"])
 runners_filter = st.sidebar.selectbox("塁状況", ["すべて", "なし", "1塁", "得点圏"])
 strikes_filter = st.sidebar.selectbox("ストライク", ["すべて", "0", "1", "2"])
+pitch_course_filter = st.sidebar.selectbox("コース", ["すべて", "内", "真中", "外"])
+pitch_height_filter = st.sidebar.selectbox("高さ", ["すべて", "低め", "真中", "高め"])
 pitch_type_filter = st.sidebar.selectbox(
     "球種", options=["すべて", "ストレート系", "スライダー系", "チェンジ系"]
 )
@@ -113,6 +115,14 @@ if runners_filter != "すべて":
     filtered_df = filtered_df[filtered_df["runners"].astype(str) == runners_filter]
 if strikes_filter != "すべて":
     filtered_df = filtered_df[filtered_df["strikes"].astype(str) == strikes_filter]
+if pitch_course_filter != "すべて":
+    filtered_df = filtered_df[
+        filtered_df["pitch_course"].astype(str) == pitch_course_filter
+    ]
+if pitch_height_filter != "すべて":
+    filtered_df = filtered_df[
+        filtered_df["pitch_height"].astype(str) == pitch_height_filter
+    ]
 if pitch_type_filter == "ストレート系":
     filtered_df = filtered_df[
         filtered_df["pitch_type"].isin(["ストレート", "ツーシーム"])
