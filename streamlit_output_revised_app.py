@@ -85,9 +85,17 @@ st.sidebar.header("操作パネル")
 team_options = ["すべて"] + sorted(hitting_df["team_name"].dropna().unique())
 selected_team = st.sidebar.selectbox("チームを選択", team_options)
 
-player_options = ["すべて"] + sorted(hitting_df["player_name"].dropna().unique())
-selected_player = st.sidebar.selectbox("選手を選択", player_options)
-
+# チームごとの選手リストを動的に表示
+if selected_team == "すべて":
+    player_options = sorted(hitting_df["player_name"].dropna().unique())
+else:
+    player_options = sorted(
+        hitting_df[hitting_df["team_name"] == selected_team]["player_name"]
+        .dropna()
+        .unique()
+    )
+selected_players = st.sidebar.multiselect("選手を選択", player_options, default=[])
+player_batLR_filter = st.sidebar.selectbox("打者左右", ["すべて", "右", "左"])
 opponents_filter = st.sidebar.selectbox("対戦相手", ["京大以外", "京大"])
 pitcherLR_filter = st.sidebar.selectbox("対右or対左", ["右", "左"])
 runners_filter = st.sidebar.selectbox("塁状況", ["すべて", "なし", "1塁", "得点圏"])
@@ -105,8 +113,11 @@ selected_hit_type = st.sidebar.selectbox("打球性質", hit_type_options)
 filtered_df = hitting_df.copy()
 if selected_team != "すべて":
     filtered_df = filtered_df[filtered_df["team_name"] == selected_team]
-if selected_player != "すべて":
-    filtered_df = filtered_df[filtered_df["player_name"] == selected_player]
+# 複数選手フィルタリング
+if selected_players:
+    filtered_df = filtered_df[filtered_df["player_name"].isin(selected_players)]
+if player_batLR_filter != "すべて":
+    filtered_df = filtered_df[filtered_df["player_batLR"] == player_batLR_filter]
 if opponents_filter != "すべて":
     filtered_df = filtered_df[filtered_df["opponents"] == opponents_filter]
 if pitcherLR_filter != "すべて":
@@ -149,8 +160,8 @@ for _, row in filtered_df.iterrows():
     color = PITCH_TYPE_COLORS.get(row["pitch_type"], "gray")
     shape = HIT_TYPE_SHAPES.get(row["hit_type"], "ellipse")
 
-    draw_shape(draw, shape, x, y, 25, color)
-    draw.line([REFERENCE_POINT, (x, y)], fill=color, width=4)
+    draw_shape(draw, shape, x, y, 21, color)
+    draw.line([REFERENCE_POINT, (x, y)], fill=color, width=2)
 
 # --- 画像表示 ---
 st.image(img_to_draw, use_container_width=True)
