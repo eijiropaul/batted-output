@@ -98,6 +98,28 @@ selected_players = st.sidebar.multiselect("選手を選択", player_options, def
 player_batLR_filter = st.sidebar.selectbox("打者左右", ["すべて", "右", "左"])
 opponents_filter = st.sidebar.selectbox("対戦相手", ["すべて", "京大以外", "京大"])
 pitcherLR_filter = st.sidebar.selectbox("対右or対左", ["すべて", "右", "左"])
+pitchername_filter = st.sidebar.selectbox(
+    "投手名(京大)",
+    [
+        "すべて",
+        "なし",
+        "玉越",
+        "櫛田",
+        "菅野",
+        "永田",
+        "白石",
+        "宮﨑",
+        "渚",
+        "谷村",
+        "武村",
+        "朽網",
+        "木村",
+        "高山",
+        "堀川",
+        "蓮香",
+        "窪",
+    ],
+)
 runners_filter = st.sidebar.selectbox("塁状況", ["すべて", "なし", "1塁", "得点圏"])
 strikes_filter = st.sidebar.selectbox("ストライク", ["すべて", "0", "1", "2"])
 pitch_course_filter = st.sidebar.selectbox("コース", ["すべて", "内", "真中", "外"])
@@ -122,6 +144,8 @@ if opponents_filter != "すべて":
     filtered_df = filtered_df[filtered_df["opponents"] == opponents_filter]
 if pitcherLR_filter != "すべて":
     filtered_df = filtered_df[filtered_df["pitcherLR"] == pitcherLR_filter]
+if pitchername_filter != "すべて":
+    filtered_df = filtered_df[filtered_df["pitchername"] == pitchername_filter]
 if runners_filter != "すべて":
     filtered_df = filtered_df[filtered_df["runners"].astype(str) == runners_filter]
 if strikes_filter != "すべて":
