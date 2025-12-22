@@ -83,7 +83,7 @@ st.sidebar.header("操作パネル")
 
 # --- フィルター ---
 team_options = ["すべて"] + sorted(hitting_df["team_name"].dropna().unique())
-selected_team = st.sidebar.selectbox("チームを選択", team_options)
+selected_team = st.sidebar.radio("チームを選択", team_options, horizontal=True)
 
 # チームごとの選手リストを動的に表示
 if selected_team == "すべて":
@@ -95,9 +95,15 @@ else:
         .unique()
     )
 selected_players = st.sidebar.multiselect("選手を選択", player_options, default=[])
-player_batLR_filter = st.sidebar.selectbox("打者左右", ["すべて", "右", "左"])
-opponents_filter = st.sidebar.selectbox("対戦相手", ["すべて", "京大以外", "京大"])
-pitcherLR_filter = st.sidebar.selectbox("対右or対左", ["すべて", "右", "左"])
+player_batLR_filter = st.sidebar.radio(
+    "打者左右", ["すべて", "右", "左"], horizontal=True
+)
+opponents_filter = st.sidebar.radio(
+    "対戦相手", ["すべて", "京大以外", "京大"], horizontal=True
+)
+pitcherLR_filter = st.sidebar.radio(
+    "対右or対左", ["すべて", "右", "左"], horizontal=True
+)
 pitchername_filter = st.sidebar.selectbox(
     "投手名(京大)",
     [
@@ -120,16 +126,26 @@ pitchername_filter = st.sidebar.selectbox(
         "窪",
     ],
 )
-runners_filter = st.sidebar.selectbox("塁状況", ["すべて", "なし", "1塁", "得点圏"])
-strikes_filter = st.sidebar.selectbox("ストライク", ["すべて", "0", "1", "2"])
-pitch_course_filter = st.sidebar.selectbox("コース", ["すべて", "内", "真中", "外"])
-pitch_height_filter = st.sidebar.selectbox("高さ", ["すべて", "低め", "真中", "高め"])
-pitch_type_filter = st.sidebar.selectbox(
-    "球種", options=["すべて", "ストレート系", "スライダー系", "チェンジ系"]
+runners_filter = st.sidebar.radio(
+    "塁状況", ["すべて", "なし", "1塁", "得点圏"], horizontal=True
+)
+strikes_filter = st.sidebar.radio(
+    "ストライク", ["すべて", "0", "1", "2"], horizontal=True
+)
+pitch_course_filter = st.sidebar.radio(
+    "コース", ["すべて", "内", "真中", "外"], horizontal=True
+)
+pitch_height_filter = st.sidebar.radio(
+    "高さ", ["すべて", "低め", "真中", "高め"], horizontal=True
+)
+pitch_type_filter = st.sidebar.radio(
+    "球種",
+    options=["すべて", "ストレート系", "スライダー系", "チェンジ系"],
+    horizontal=True,
 )
 
 hit_type_options = ["すべて"] + sorted(hitting_df["hit_type"].dropna().unique())
-selected_hit_type = st.sidebar.selectbox("打球性質", hit_type_options)
+selected_hit_type = st.sidebar.radio("打球性質", hit_type_options, horizontal=True)
 
 # --- データフィルタリング ---
 filtered_df = hitting_df.copy()
