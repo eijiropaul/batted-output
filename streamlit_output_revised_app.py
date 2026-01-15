@@ -124,8 +124,8 @@ pitchername_filter = st.sidebar.radio(
         "堀川",
         "蓮香",
         "窪",
-        horizontal=True,
     ],
+    horizontal=True,
 )
 runners_filter = st.sidebar.radio(
     "塁状況", ["すべて", "なし", "1塁", "得点圏"], horizontal=True
