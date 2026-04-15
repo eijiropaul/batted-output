@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw
 
 # --- 定数と定義 ---
 BASEBALL_FIELD_IMG = "baseballfield.jpg"
-DATA_FILENAME = "hitting_data.csv"
+DATA_FILENAME = "hitting_data_yamashita.csv"
 REFERENCE_POINT_ORIGINAL = (632, 1069)  # 元画像サイズでの基準点
 TARGET_SIZE = (750, 750)  # インプットと同じサイズに揃える
 
@@ -83,14 +83,14 @@ st.sidebar.header("操作パネル")
 
 # --- フィルター ---
 team_options = ["すべて"] + sorted(hitting_df["team_name"].dropna().unique())
-selected_team = st.sidebar.radio("チームを選択", team_options, horizontal=True)
+selected_team = st.sidebar.multiselect("チームを選択", team_options, default=["すべて"])
 
 # チームごとの選手リストを動的に表示
-if selected_team == "すべて":
+if "すべて" in selected_team:
     player_options = sorted(hitting_df["player_name"].dropna().unique())
 else:
     player_options = sorted(
-        hitting_df[hitting_df["team_name"] == selected_team]["player_name"]
+        hitting_df[hitting_df["team_name"].isin(selected_team)]["player_name"]
         .dropna()
         .unique()
     )
@@ -104,7 +104,7 @@ opponents_filter = st.sidebar.radio(
 pitcherLR_filter = st.sidebar.radio(
     "対右or対左", ["すべて", "右", "左"], horizontal=True
 )
-pitchername_filter = st.sidebar.radio(
+pitchername_filter = st.sidebar.multiselect(
     "投手名(京大)",
     [
         "すべて",
@@ -125,7 +125,7 @@ pitchername_filter = st.sidebar.radio(
         "蓮香",
         "窪",
     ],
-    horizontal=True,
+    # horizontal=True,
 )
 runners_filter = st.sidebar.radio(
     "塁状況", ["すべて", "なし", "1塁", "得点圏"], horizontal=True
@@ -145,13 +145,17 @@ pitch_type_filter = st.sidebar.radio(
     horizontal=True,
 )
 
+hit_rank_filter = st.sidebar.radio(
+    "打球ランク", ["すべて", "A", "B", "C"], horizontal=True
+)
+
 hit_type_options = ["すべて"] + sorted(hitting_df["hit_type"].dropna().unique())
 selected_hit_type = st.sidebar.radio("打球性質", hit_type_options, horizontal=True)
 
 # --- データフィルタリング ---
 filtered_df = hitting_df.copy()
-if selected_team != "すべて":
-    filtered_df = filtered_df[filtered_df["team_name"] == selected_team]
+if "すべて" not in selected_team:
+    filtered_df = filtered_df[filtered_df["team_name"].isin(selected_team)]
 # 複数選手フィルタリング
 if selected_players:
     filtered_df = filtered_df[filtered_df["player_name"].isin(selected_players)]
@@ -162,7 +166,7 @@ if opponents_filter != "すべて":
 if pitcherLR_filter != "すべて":
     filtered_df = filtered_df[filtered_df["pitcherLR"] == pitcherLR_filter]
 if pitchername_filter != "すべて":
-    filtered_df = filtered_df[filtered_df["pitchername"] == pitchername_filter]
+    filtered_df = filtered_df[filtered_df["pitchername"].isin(pitchername_filter)]
 if runners_filter != "すべて":
     filtered_df = filtered_df[filtered_df["runners"].astype(str) == runners_filter]
 if strikes_filter != "すべて":
@@ -187,6 +191,10 @@ elif pitch_type_filter == "チェンジ系":
     filtered_df = filtered_df[
         filtered_df["pitch_type"].isin(["チェンジアップ", "フォーク"])
     ]
+
+elif hit_rank_filter != "すべて":
+    filtered_df = filtered_df[filtered_df["hit_rank"] == hit_rank_filter]
+
 if selected_hit_type != "すべて":
     filtered_df = filtered_df[filtered_df["hit_type"] == selected_hit_type]
 
