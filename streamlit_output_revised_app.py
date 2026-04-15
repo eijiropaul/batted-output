@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw
 
 # --- 定数と定義 ---
 BASEBALL_FIELD_IMG = "baseballfield.jpg"
-DATA_FILENAME = "hitting_data_yamashita.csv"
+DATA_FILENAME = "hitting_data.csv"
 REFERENCE_POINT_ORIGINAL = (632, 1069)  # 元画像サイズでの基準点
 TARGET_SIZE = (750, 750)  # インプットと同じサイズに揃える
 
