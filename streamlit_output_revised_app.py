@@ -104,7 +104,7 @@ opponents_filter = st.sidebar.radio(
 pitcherLR_filter = st.sidebar.radio(
     "対右or対左", ["すべて", "右", "左"], horizontal=True
 )
-pitchername_filter = st.sidebar.multiselect(
+pitchername_filter = st.sidebar.radio(
     "投手名(京大)",
     [
         "すべて",
@@ -125,7 +125,7 @@ pitchername_filter = st.sidebar.multiselect(
         "蓮香",
         "窪",
     ],
-    # horizontal=True,
+    horizontal=True,
 )
 runners_filter = st.sidebar.radio(
     "塁状況", ["すべて", "なし", "1塁", "得点圏"], horizontal=True
