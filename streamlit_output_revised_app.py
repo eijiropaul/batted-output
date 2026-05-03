@@ -166,7 +166,7 @@ if opponents_filter != "すべて":
 if pitcherLR_filter != "すべて":
     filtered_df = filtered_df[filtered_df["pitcherLR"] == pitcherLR_filter]
 if pitchername_filter != "すべて":
-    filtered_df = filtered_df[filtered_df["pitchername"].isin(pitchername_filter)]
+    filtered_df = filtered_df[filtered_df["pitchername"].isin([pitchername_filter])]
 if runners_filter != "すべて":
     filtered_df = filtered_df[filtered_df["runners"].astype(str) == runners_filter]
 if strikes_filter != "すべて":
